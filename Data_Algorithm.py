@@ -170,9 +170,6 @@ class DoubleLinkedList:
         self.head = None
 
     def print_forward(self):
-        if self.head is None:
-            print("Linked list is empty")
-            return
 
         itr = self.head
         llstr = ''
@@ -182,10 +179,6 @@ class DoubleLinkedList:
         print(llstr)
 
     def print_backward(self):
-        if self.head is None:
-            print("Linked list is empty")
-            return
-
         last_node = self.get_last_node()
         itr = last_node
         llstr = ''
@@ -277,3 +270,196 @@ class DoubleLinkedList:
         self.head = None
         for data in data_list:
             self.insert_at_end(data)
+
+''' Tree Implementation '''
+
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.children = []
+        self.parent = None
+
+    def get_level(self):
+        level = 0
+        p = self.parent
+        while p:
+            level += 1
+            p = p.parent
+
+        return level
+
+    def print_tree(self):
+        spaces = ' ' * self.get_level() * 3
+        prefix = spaces + "|__" if self.parent else ""
+        print(prefix + self.data)
+        if self.children:
+            for child in self.children:
+                child.print_tree()
+
+    def add_child(self, child):
+        child.parent = self
+        self.children.append(child)
+
+def build_product_tree():
+        root = TreeNode("Electronics")
+
+        laptop = TreeNode("Laptop")
+        laptop.add_child(TreeNode("Mac"))
+        laptop.add_child(TreeNode("Surface"))
+        laptop.add_child(TreeNode("Thinkpad"))
+
+        cellphone = TreeNode("Cell Phone")
+        cellphone.add_child(TreeNode("iPhone"))
+        cellphone.add_child(TreeNode("Google Pixel"))
+        cellphone.add_child(TreeNode("Vivo"))
+
+        tv = TreeNode("TV")
+        tv.add_child(TreeNode("Samsung"))
+        tv.add_child(TreeNode("LG"))
+
+        root.add_child(laptop)
+        root.add_child(cellphone)
+        root.add_child(tv)
+
+        root.print_tree()
+
+if __name__ == '__main__':
+    pass
+    #build_product_tree()
+
+    "Im The Stupidest Person Alive :("
+
+""" Binary Tree """
+
+class Binary_Tree:
+    def __init__(self,data):
+        self.data = data
+        self.left = None
+        self.right = None
+    
+    def appended(self, data):
+        if data == self.data:
+            return
+        elif data < self.data:
+            if self.left:
+                self.left.appended(data)
+            else:
+                self.left = Binary_Tree(data)
+        else:
+            if self.right:
+                self.right.appended(data)
+            else:
+                self.right = Binary_Tree(data)
+    
+    def search(self, data):
+        # searching recursively
+        if self.data == data:
+            return True
+        
+        elif data < self.data:
+            # it might be in left subtree
+            if self.left:
+                return self.left.search(data)
+            else:
+                return False
+        
+        elif data > self.data:
+            # it might be in right subtree
+            if self.right:
+                return self.right.search(data)
+            else:
+                return False
+        
+    def find_min(self):
+        if self.left is None:
+            return self.data
+        
+        return self.left.find_min()
+    
+    def find_max(self):
+        if self.right is None:
+            return self.data
+        return self.right.find_max()
+    
+    def delete(self, val):
+        if val < self.data:
+            if self.left:
+                self.left = self.left.delete(val)
+        elif val > self.data:
+            if self.right:
+                self.right = self.right.delete(val)
+        else:
+            if self.left is None and self.right is None:
+                return None
+            elif self.left is None:
+                return self.right
+            elif self.right is None:
+                return self.left
+
+            min_val = self.right.find_min()
+            self.data = min_val
+            self.right = self.right.delete(min_val)
+
+        return self
+
+    
+    def calculate_sum(self):
+        left_sum = self.left.calculate_sum() if self.left else 0
+        right_sum = self.right.calculate_sum() if self.right else 0
+        return self.data + left_sum + right_sum
+    
+    def in_order_traversal(self):
+        elements = []
+        if self.left:
+            elements += self.left.in_order_traversal()
+
+        elements.append(self.data)
+
+        if self.right:
+            elements += self.right.in_order_traversal()
+
+        return elements
+
+    def pre_order_traversal(self):
+        elements = [self.data]
+        if self.left:
+            elements += self.left.pre_order_traversal()
+        if self.right:
+            elements += self.right.pre_order_traversal()
+
+        return elements
+    
+    def post_order_traversal(self):
+        elements = []
+        if self.left:
+            elements += self.left.post_order_traversal()
+        if self.right:
+            elements += self.right.post_order_traversal()
+
+        elements.append(self.data)
+
+        return elements
+    
+
+def build_product_tree(element):
+    root = Binary_Tree(element[0])
+
+    for i in range(1, len(element)):
+        root.appended(element[i])
+    
+    return root
+
+if __name__ == '__main__':
+    numbers_tree = build_product_tree([17, 4, 1, 20, 9, 23, 18, 34])
+    print(numbers_tree.search(1))
+    print(numbers_tree.find_max())
+    numbers_tree.delete(20)
+    print("After deleting 20 ",numbers_tree.in_order_traversal()) # this should print [1, 4, 9, 17, 18, 23, 34]
+    print(numbers_tree.calculate_sum())
+
+    ''' My head is starting to work, but!!! yeah still stupid
+        or maybe i just woke up and that's why my head is working
+                                                                '''
+
+
+
