@@ -395,10 +395,14 @@ class Binary_Tree:
                 return self.right
             elif self.right is None:
                 return self.left
+            else:
+                min_val = self.right.find_min()
+                self.data = min_val
+                self.right = self.right.delete(min_val)
+            max_val = self.right.find_max()
+            self.data = max_val
+            self.right = self.right.delete(max_val)
 
-            min_val = self.right.find_min()
-            self.data = min_val
-            self.right = self.right.delete(min_val)
 
         return self
 
@@ -450,16 +454,98 @@ def build_product_tree(element):
     return root
 
 if __name__ == '__main__':
-    numbers_tree = build_product_tree([17, 4, 1, 20, 9, 23, 18, 34])
-    print(numbers_tree.search(1))
-    print(numbers_tree.find_max())
-    numbers_tree.delete(20)
-    print("After deleting 20 ",numbers_tree.in_order_traversal()) # this should print [1, 4, 9, 17, 18, 23, 34]
-    print(numbers_tree.calculate_sum())
+    # numbers_tree = build_product_tree([17, 4, 1, 20, 9, 23, 18, 34])
+    # print(numbers_tree.search(1))
+    # print(numbers_tree.find_max())
+    # numbers_tree.delete(20)
+    # print("After deleting 20 ",numbers_tree.in_order_traversal()) # this should print [1, 4, 9, 17, 18, 23, 34]
+    # print(numbers_tree.calculate_sum())
+    pass
 
     ''' My head is starting to work, but!!! yeah still stupid
         or maybe i just woke up and that's why my head is working
                                                                 '''
 
+class MinHeap:
+    def __init__(self,capacity):
+        self.storage = [0] * capacity
+        self.capacity = capacity
+        self.size = 0
+    
+    def GetParentIndex(self,index):
+        return (index - 1) //2
+    
+    def GetLeftChild(self,index):
+        return 2 * index + 1
 
+    def GetRightChild(self,index):
+        return 2 * index + 2
+    
+    def hasParent(self,index):
+        return self.GetParentIndex(index) >= 0
+    
+    def hasLeftChild(self,index):
+        return self.GetLeftChild(index) < self.size
+    
+    def hasRightChild(self,index):
+        return self.getRightChild(index) > self.size
+    
+    def parent(self,index):
+        return self.storage[self.GetParentIndex(index)]
+    
+    def left_child(self,index):
+        return self.storage[self.hasLeftChild(index)]
+    
+    def right_child(self,index):
+        return self.storage[self.GetRightChild(index)]
+    
+    def isFull(self):
+        return self.size == self.storage
+    
+    def swap(self, index1, index2):
+        temp = self.storage[index1]
+        self.storage[index1] = self.storage[index2]
+        self.storage[index2] = temp
+    
+    # def insert(self, data):
+    #     if self.isFull():
+    #         raise Exception("Maximum Capacity Has Been Reach")
+    #     self.storage[self.size] = data
+    #     self.size += 1
+    #     self.heapifyUp()
+    
+    # def heapifyUp(self):
+    #     index = self.size - 1
+    #     while self.hasParent(index) and self.parent(index) > self.storage[index]:
+    #         self.swap(self.GetParentIndex(index), index)
+    #         index = self.GetParentIndex(index)
+
+    ''' Recursively '''
+    def insert(self, data):
+        if self.isFull():
+            raise Exception("Maximum Capacity Has Been Reach")
+        self.storage[self.size] = data
+        self.size += 1
+        self.heapifyUp(self.size - 1)
+    
+    def remove(self, data):
+        if self.isFull():
+            raise Exception("Maximum Capacity Has Been Reach")
+        self.storage[self.size] = data
+        self.size -= 1
+        self.heapifyUp(self.size - 1)
+    
+    def heapifyUp(self, index):
+        # index = self.size - 1
+        if (self.hasParent(index) and self.parent(index) > self.storage[index]):
+            self.swap(self.GetParentIndex(index), index)
+            self.heapifyUp(self.GetParentIndex(index))
+        
+class MaxHeap:
+    def __init__(self,capacity):
+        self.storage = [0] * capacity
+        self.capacity = capacity
+        self.size = 0     
+    
+    
 

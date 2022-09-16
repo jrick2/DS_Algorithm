@@ -47,7 +47,22 @@ class Binary_Tree:
                 return self.right.search()
             else:
                 return False
-        
+    
+    def delete(self, data):
+        if data < self.data:
+            if self.left:
+                self.left =  self.left.delete(data)
+        elif data > self.data:
+            if self.right:
+                self.right = self.left.delete(data)
+        else:
+            if self.left and self.right is None:
+                return None
+                if self.left is None:
+                    return self.right
+                elif self.right is None:
+                    return self.left
+        return self        
     def in_order_traversal(self):
         element = []
         
@@ -61,8 +76,7 @@ class Binary_Tree:
         
         return element
     
-    def remove(self, data):
-        pass
+
         
 
 def build_product_tree(element):
