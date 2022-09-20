@@ -59,33 +59,54 @@ class MinHeap:
         self.storage[self.size] = data
         self.size += 1
         self.heapifyUp(self.size - 1)
-    
-    def remove(self):
-        if self.size == 0:
-            raise Exception("Maximum Capacity Has Been Reach")
-        data = self.storage[0]
-        self.storage[0] = self.storage[self.size -1]
-        self.size -= 1
-        self.heapifyDown()
-        return data
-    
+       
     def heapifyUp(self, index):
         # index = self.size - 1
         if (self.hasParent(index) and self.parent(index) > self.storage[index]):
             self.swap(self.GetParentIndex(index), index)
             self.heapifyUp(self.GetParentIndex(index))
     
-    def heapifyDown(self):
-        index = 0
-        while self.hasLeftChild(index):
-            smallerChildIndex = self.GetLeftChild(index)
-            if (self.hasRightChild(index) and self.right_child(index) < self.leftChild(index)):
-                smallerChildIndex = self.GetRightChild(index)
-            if (self.storage[index] < self.storage[smallerChildIndex]):
-                break
-            else:
-                self.swap(index, smallerChildIndex)
-            index = smallerChildIndex
+    # def remove(self):
+    #     if self.size == 0:
+    #         raise Exception("Maximum Capacity Has Been Reach")
+    #     data = self.storage[0]
+    #     self.storage[0] = self.storage[self.size - 1]
+    #     self.size -= 1
+    #     self.heapifyDown()
+    #     return data
+    
+    # def heapifyDown(self):
+    #     index = 0
+    #     while self.hasLeftChild(index):
+    #         smallerChildIndex = self.GetLeftChild(index)
+    #         if (self.hasRightChild(index) and self.right_child(index) < self.leftChild(index)):
+    #             smallerChildIndex = self.GetRightChild(index)
+    #         if (self.storage[index] < self.storage[smallerChildIndex]):
+    #             break
+    #         else:
+    #             self.swap(index, smallerChildIndex)
+    #         index = smallerChildIndex
+        
+    ''' Recursively '''
+    def remove(self):
+        if self.size == 0:
+            raise Exception("Maximum Capacity Has Been Reach")
+        data = self.storage[0]
+        self.storage[0] = self.storage[self.size - 1]
+        self.size -= 1
+        self.heapifyDown(0)
+        return data
+    
+    def heapifyDown(self, index):
+        smallest = index
+        if (self,hasLeftChild(index) and self.storage[smallest] > self.left_child(index)):
+            smallest = self.GetLeftChild(index)
+        if (self.hasRightChild(index) and self.storage[smallest] > self.right_child(index)):
+            smallest = self.GetRightChild(index)
+        if smallest != index:
+            self.swap(index,smallest)
+            self.heapifyDown(smallest)       
+
 class MaxHeap:
     def __init__(self,capacity):
         self.storage = [0] * capacity
